@@ -4,7 +4,7 @@ Below are sample queries for GitView's custom reports and dashboard feature.
 
 ### Impact by contributor last 6 Months
 
-```
+```sql
 SELECT date_trunc('month', authored_at) as Month,
         (SELECT name
             FROM contributors
@@ -20,7 +20,7 @@ SELECT date_trunc('month', authored_at) as Month,
 
 ### Deploys in last 6 months
 
-```
+```sql
 SELECT date_trunc('month', external_created_at) as Month, COUNT(*) FROM pull_requests
     where external_created_at > date_trunc('month', current_date - interval '6' month)
     AND title iLIKE ANY(ARRAY['%release%', '%deploy%'])
@@ -45,7 +45,7 @@ SELECT date_trunc('month', external_merged_at) as Month,
 
 ### Bug fixes last 6 months
 
-```
+```sql
 SELECT date_trunc('month', external_created_at) as MONTH, COUNT(*) FROM pull_requests
     where external_created_at > date_trunc('month', current_date - interval '6' month)
     AND (title iLIKE ANY(ARRAY['%bug%', '%fix%']) OR body iLIKE ANY(ARRAY['%bug%', '%fix%']))
@@ -55,7 +55,7 @@ SELECT date_trunc('month', external_created_at) as MONTH, COUNT(*) FROM pull_req
 
 ### Merged Pull Requests Over Last 6 Months by week
 
-```
+```sql
 SELECT date_trunc('week', external_created_at) as Week, COUNT(*) FROM pull_requests
     where external_created_at > date_trunc('month', current_date - interval '6' month)
     AND external_merged_at IS NOT NULL
