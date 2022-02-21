@@ -1,6 +1,6 @@
 ## GitView Sample Queries
 
-Below are sample queries for GitView's custom reports and dashboard feature.
+Below are sample queries for GitView's custom reports and dashboard feature at [GitView.com](https://gitview.com)
 
 ### Impact by contributor last 6 Months
 
