@@ -29,7 +29,7 @@ SELECT date_trunc('month', external_created_at) as Month, COUNT(*) FROM pull_req
 
 ### PRs Merged in last 6 months
 
-```
+```sql
 SELECT date_trunc('month', external_merged_at) as Month,
         (SELECT name
             FROM contributors
