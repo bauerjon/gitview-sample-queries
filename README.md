@@ -15,7 +15,7 @@ SELECT date_trunc('month', authored_at) as Month,
     INNER JOIN contributors ON commits.contributor_id=contributors.id
     INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
     where authored_at > date_trunc('month', current_date - interval '6' month)
-    GROUP BY Month, Name, contributor_parents.id
+    GROUP BY Month, contributor_parents.id
 ```
 
 ### Deploys in last 6 months
