@@ -62,7 +62,7 @@ SELECT date_trunc('week', external_created_at) as Week, COUNT(*) FROM pull_reque
     GROUP BY Week
 ```
 
-### Automated Test Lines of Code vs Non Test Lines of Code
+### Automated Test Lines of Code vs Non Test Lines of Code (Merged Lines Only)
 
 ```sql
 SELECT date_trunc('month', authored_at) as Month, SUM(commits.number_of_added_lines_filtered) - SUM(commits.number_of_added_test_lines_filtered) as NonTestLines, SUM(commits.number_of_added_test_lines_filtered) as TestLines FROM commits
