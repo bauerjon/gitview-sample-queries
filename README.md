@@ -62,6 +62,54 @@ SELECT date_trunc('week', external_created_at) as Week, COUNT(*) FROM pull_reque
     GROUP BY Week
 ```
 
+### Issues Created Last 6 Months By Contributor
+
+```sql
+SELECT date_trunc('month', external_created_at) as Month,
+        (SELECT name
+            FROM contributors
+            WHERE contributor_parents.id=contributors.contributor_parent_id LIMIT 1)
+            AS Name,
+        COUNT(issues)
+    FROM issues
+    INNER JOIN contributors ON issues.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where external_created_at > date_trunc('month', current_date - interval '6' month)
+    GROUP BY Month, contributor_parents.id
+```
+
+
+### Issues Closed Last 6 Months Grouped By Assignee
+
+```sql
+SELECT date_trunc('month', external_closed_at) as Month,
+        (SELECT name
+            FROM contributors
+            WHERE contributor_parents.id=contributors.contributor_parent_id LIMIT 1)
+            AS Name,
+        COUNT(issues)
+    FROM issues
+    INNER JOIN issue_assignees ON issue_assignees.issue_id=issues.id
+    INNER JOIN contributors ON issue_assignees.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where external_closed_at > date_trunc('month', current_date - interval '6' month)
+    GROUP BY Month, contributor_parents.id
+```
+
+### Issues with title, body, or label with word "bug"
+
+```
+SELECT date_trunc('month', external_created_at) as Month,
+        COUNT(issues)
+    FROM issues
+    INNER JOIN issue_labels ON issue_labels.issue_id = issues.id
+    INNER JOIN labels ON issue_labels.label_id = labels.id
+    where external_created_at > date_trunc('month', current_date - interval '6' month)
+    AND (labels.name ILIKE 'bug' OR issues.body ILIKE '%bug%' OR issues.title ILIKE '%bug%')
+    GROUP BY Month
+```
+
+
 ### Automated Test Lines of Code vs Non Test Lines of Code (Merged Lines Only)
 
 ```sql
