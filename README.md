@@ -98,7 +98,7 @@ SELECT date_trunc('month', external_closed_at) as Month,
 
 ### Issues created with title, body, or label with word "bug" last 6 months
 
-```
+```sql
 SELECT date_trunc('month', external_created_at) as Month,
         COUNT(issues)
     FROM issues
