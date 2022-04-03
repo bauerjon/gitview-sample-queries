@@ -96,7 +96,7 @@ SELECT date_trunc('month', external_closed_at) as Month,
     GROUP BY Month, contributor_parents.id
 ```
 
-### Issues with title, body, or label with word "bug"
+### Issues created with title, body, or label with word "bug" last 6 months
 
 ```
 SELECT date_trunc('month', external_created_at) as Month,
