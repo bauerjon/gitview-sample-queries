@@ -109,6 +109,16 @@ SELECT date_trunc('month', external_created_at) as Month,
     GROUP BY Month
 ```
 
+### Issues over time
+
+```sql
+SELECT date_trunc('month', external_created_at) as Month,
+        COUNT(issues)
+    FROM issues
+    where external_created_at > date_trunc('month', current_date - interval '24' month)
+    GROUP BY Month
+```
+
 
 ### Automated Test Lines of Code vs Non Test Lines of Code (Merged Lines Only)
 
