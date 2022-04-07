@@ -119,6 +119,17 @@ SELECT date_trunc('month', external_created_at) as Month,
     GROUP BY Month
 ```
 
+### Pull Requests By Day of Week
+
+```sql
+SELECT  extract(isodow from external_created_at) || '-' || To_Char(external_created_at, 'DAY') as DayOfWeek,
+        COUNT(*)
+    FROM pull_requests
+    INNER JOIN contributors ON pull_requests.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where external_created_at > {start_time} AND external_created_at < {end_time}
+    GROUP BY DayOfWeek
+```
 
 ### Automated Test Lines of Code vs Non Test Lines of Code (Merged Lines Only)
 
