@@ -180,3 +180,22 @@ SELECT commits.impact, commits.number_of_added_lines_total, commits.new_work, co
     AND commits.is_merged=true
     ORDER BY commits.authored_at
 ```
+
+
+### Clean Impact 
+
+Impact produced with the least churn involved
+
+```sql
+SELECT  contributor_parents.name,
+ SUM(commits.impact) * (1 - (SUM(commits.churn) / NULLIF(SUM(commits.impact),0))) as clean_impact,
+ (SUM(commits.churn) / NULLIF(SUM(commits.impact),0)) as churn_ratio,
+ SUM(commits.impact) as impact
+    FROM commits
+    INNER JOIN contributors ON commits.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where commits.authored_at > {start_time} AND commits.authored_at < {end_time}
+    AND commits.is_merged=true
+    GROUP BY contributor_parents.name
+    ORDER BY clean_impact desc nulls last
+```
