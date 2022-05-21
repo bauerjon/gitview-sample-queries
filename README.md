@@ -150,3 +150,20 @@ SELECT date_trunc('month', authored_at) as Month,
     AND commits.is_merged=true
     GROUP BY Month
 ```
+
+# Lines Added By Contributor w/ Line and File Filters Applied
+
+*Note the line filters can be applied in repository settings*
+
+
+```sql
+SELECT date_trunc('month', authored_at) as Month,
+        contributor_parents.name as ContributorName,
+        SUM(commits.number_of_added_lines_filtered)
+    FROM commits
+    INNER JOIN contributors ON commits.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where authored_at > date_trunc('month', current_date - interval '12' month)
+    AND commits.is_merged=true
+    GROUP BY Month, ContributorName
+```
