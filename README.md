@@ -147,5 +147,6 @@ SELECT date_trunc('month', authored_at) as Month,
         SUM(commits.impact)
     FROM commits
     where authored_at > date_trunc('month', current_date - interval '12' month)
+    AND commits.is_merged=true
     GROUP BY Month
 ```
