@@ -140,7 +140,7 @@ SELECT date_trunc('month', authored_at) as Month, SUM(commits.number_of_added_li
     GROUP BY Month
 ```
 
-# Impact last 12 months
+### Impact last 12 months
 
 ```sql
 SELECT date_trunc('month', authored_at) as Month,
@@ -151,7 +151,7 @@ SELECT date_trunc('month', authored_at) as Month,
     GROUP BY Month
 ```
 
-# Lines Added By Contributor w/ Line and File Filters Applied
+### Lines Added By Contributor w/ Line and File Filters Applied
 
 *Note the line filters can be applied in repository settings*
 
@@ -166,4 +166,17 @@ SELECT date_trunc('month', authored_at) as Month,
     where authored_at > date_trunc('month', current_date - interval '12' month)
     AND commits.is_merged=true
     GROUP BY Month, ContributorName
+```
+
+### In depth commit analysis by contributor
+
+```sql
+SELECT commits.impact, commits.number_of_added_lines_total, commits.new_work, commits.simple_work, commits.churn, commits.help_others, commits.legacy_refactor, commits.ignored_lines, commits.number_of_removed_lines_total, number_of_added_lines_total, commits.authored_at, commits.sha
+    FROM commits
+    INNER JOIN contributors ON commits.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where authored_at > date_trunc('month', current_date - interval '12' month)
+    AND contributor_parents.id='Contributor Parent Id'
+    AND commits.is_merged=true
+    ORDER BY commits.authored_at
 ```
