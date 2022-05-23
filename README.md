@@ -83,16 +83,13 @@ SELECT date_trunc('month', external_created_at) as Month,
 
 ```sql
 SELECT date_trunc('month', external_closed_at) as Month,
-        (SELECT name
-            FROM contributors
-            WHERE contributor_parents.id=contributors.contributor_parent_id LIMIT 1)
-            AS Name,
+        contributor_parents.name AS Name,
         COUNT(issues)
     FROM issues
     INNER JOIN issue_assignees ON issue_assignees.issue_id=issues.id
     INNER JOIN contributors ON issue_assignees.contributor_id=contributors.id
     INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
-    where external_closed_at > date_trunc('month', current_date - interval '6' month)
+    where external_closed_at > date_trunc('month', current_date - interval '12' month)
     GROUP BY Month, contributor_parents.id
 ```
 
