@@ -2,19 +2,16 @@
 
 Below are sample queries for GitView's custom reports and dashboard feature at [GitView.com](https://gitview.com)
 
-### Impact by contributor last 6 Months
+### Impact by contributor last 12 Months
 
 ```sql
 SELECT date_trunc('month', authored_at) as Month,
-        (SELECT name
-            FROM contributors
-            WHERE contributor_parents.id=contributors.contributor_parent_id LIMIT 1)
-            AS Name,
+        contributor_parents.name as Name,
         SUM(commits.impact)
     FROM commits
     INNER JOIN contributors ON commits.contributor_id=contributors.id
     INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
-    where authored_at > date_trunc('month', current_date - interval '6' month)
+    where authored_at > date_trunc('month', current_date - interval '12' month)
     GROUP BY Month, contributor_parents.id
 ```
 
