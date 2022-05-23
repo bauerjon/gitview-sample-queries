@@ -79,7 +79,7 @@ SELECT date_trunc('month', external_created_at) as Month,
 ```
 
 
-### Issues Closed Last 6 Months Grouped By Assignee
+### Issues Closed Last 12 Months Grouped By Assignee
 
 ```sql
 SELECT date_trunc('month', external_closed_at) as Month,
