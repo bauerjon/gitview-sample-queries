@@ -128,7 +128,7 @@ SELECT  extract(isodow from external_created_at) || '-' || To_Char(external_crea
 ### Automated Test Lines of Code vs Non Test Lines of Code (Merged Lines Only)
 
 ```sql
-SELECT date_trunc('month', authored_at) as Month, SUM(commits.number_of_added_lines_filtered) - SUM(commits.number_of_added_test_lines_filtered) as NonTestLines, SUM(commits.number_of_added_test_lines_filtered) as TestLines FROM commits
+SELECT date_trunc('month', authored_at) as Month, SUM(commits.number_of_added_lines_not_filtered_out) - SUM(commits.number_of_added_test_lines_not_filtered_out) as NonTestLines, SUM(commits.number_of_added_test_lines_not_filtered_out) as TestLines FROM commits
     where authored_at > date_trunc('month', current_date - interval '12' month)
     AND commits.is_merged=true
     GROUP BY Month
@@ -153,7 +153,7 @@ SELECT date_trunc('month', authored_at) as Month,
 ```sql
 SELECT date_trunc('month', authored_at) as Month,
         contributor_parents.name as ContributorName,
-        SUM(commits.number_of_added_lines_filtered)
+        SUM(commits.number_of_added_lines_not_filtered_out)
     FROM commits
     INNER JOIN contributors ON commits.contributor_id=contributors.id
     INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
