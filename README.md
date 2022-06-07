@@ -28,16 +28,13 @@ SELECT date_trunc('month', external_created_at) as Month, COUNT(*) FROM pull_req
 
 ```sql
 SELECT date_trunc('month', external_merged_at) as Month,
-        (SELECT name
-            FROM contributors
-            WHERE contributor_parents.id=contributors.contributor_parent_id LIMIT 1)
-            AS Name,
+        contributor_parents.name as ContributorName,
         COUNT(pull_requests)
     FROM pull_requests
     INNER JOIN contributors ON pull_requests.contributor_id=contributors.id
     INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
     where external_merged_at > date_trunc('month', current_date - interval '6' month)
-    GROUP BY Month, Name, contributor_parents.id
+    GROUP BY Month, ContributorName, contributor_parents.id
 ```
 
 ### Bug fixes last 6 months
