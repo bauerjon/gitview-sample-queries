@@ -187,3 +187,25 @@ SELECT  contributor_parents.name,
     GROUP BY contributor_parents.name
     ORDER BY clean_impact desc nulls last
 ```
+
+### Custom Stat Sheet
+
+```
+SELECT contributor_parents.name as contributor_name,
+    SUM(commits.impact) as impact,
+    SUM(commits.new_work) as new_work,
+    SUM(commits.simple_work) as simple_work,
+    SUM(commits.churn) as churn,
+    SUM(commits.legacy_refactor) as legacy_refactor,
+    SUM(commits.help_others) as help_others,
+    SUM(commits.ignored_lines) as ignored_lines,
+    SUM(commits.isolated_removals) as isolated_removals,
+    SUM(commits.number_of_added_lines_total) as total_lines_added,
+    SUM(commits.number_of_added_test_lines_total) as test_lines_added
+    FROM commits
+    INNER JOIN contributors ON commits.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where commits.authored_at > '2022-04-23'
+    GROUP BY contributor_name
+    ORDER BY impact desc nulls last
+```
