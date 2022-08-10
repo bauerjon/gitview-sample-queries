@@ -190,7 +190,7 @@ SELECT  contributor_parents.name,
 
 ### Custom Stat Sheet
 
-```
+```sql
 SELECT contributor_parents.name as contributor_name,
     SUM(commits.impact) as impact,
     SUM(commits.new_work) as new_work,
