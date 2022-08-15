@@ -24,7 +24,7 @@ SELECT date_trunc('month', external_created_at) as Month, COUNT(*) FROM pull_req
     GROUP BY Month
 ```
 
-### PRs Merged in last 6 months
+### PRs Merged in last 6 months By Contributor
 
 ```sql
 SELECT date_trunc('month', external_merged_at) as Month,
@@ -35,6 +35,32 @@ SELECT date_trunc('month', external_merged_at) as Month,
     INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
     where external_merged_at > date_trunc('month', current_date - interval '6' month)
     GROUP BY Month, ContributorName, contributor_parents.id
+```
+
+### Issues Created Last 6 Months By Contributor
+
+```sql
+SELECT date_trunc('month', external_merged_at) as Month,
+        contributor_parents.name as ContributorName,
+        COUNT(pull_requests)
+    FROM pull_requests
+    INNER JOIN contributors ON pull_requests.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where external_merged_at > date_trunc('month', current_date - interval '6' month)
+    GROUP BY Month, ContributorName, contributor_parents.id
+```
+
+### Comments Added Last 6 Months By Contributor
+
+```sql
+SELECT date_trunc('month', comments.external_created_at) as Month,
+        contributor_parents.name as Name,
+        COUNT(*)
+    FROM comments
+    INNER JOIN contributors ON comments.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where comments.external_created_at > date_trunc('month', current_date - interval '6' month)
+    GROUP BY Month, contributor_parents.id
 ```
 
 ### Bug fixes last 6 months
@@ -56,18 +82,7 @@ SELECT date_trunc('week', external_created_at) as Week, COUNT(*) FROM pull_reque
     GROUP BY Week
 ```
 
-### Issues Created Last 6 Months By Contributor
 
-```sql
-SELECT date_trunc('month', external_merged_at) as Month,
-        contributor_parents.name as ContributorName,
-        COUNT(pull_requests)
-    FROM pull_requests
-    INNER JOIN contributors ON pull_requests.contributor_id=contributors.id
-    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
-    where external_merged_at > date_trunc('month', current_date - interval '6' month)
-    GROUP BY Month, ContributorName, contributor_parents.id
-```
 
 
 ### Issues Closed Last 12 Months Grouped By Assignee
