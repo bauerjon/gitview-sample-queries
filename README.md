@@ -165,6 +165,18 @@ SELECT date_trunc('month', authored_at) as Month,
     GROUP BY Month
 ```
 
+### Pull Request Iterations (commits after comments on p.r.s)
+
+```sql
+SELECT date_trunc('month', commits.authored_at) as Month,
+        COUNT(*)
+    FROM pull_request_commits
+    INNER JOIN  commits ON commits.id = pull_request_commits.commit_id
+    where commits.authored_at > date_trunc('month', current_date - interval '12' month)
+    AND pull_request_commits.is_pr_iteration=true
+    GROUP BY Month
+```
+
 ### Lines Added By Contributor w/ Line and File Filters Applied
 
 *Note the line filters can be applied in repository settings*
