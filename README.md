@@ -228,7 +228,7 @@ SELECT  contributor_parents.name,
 
 ### PR Effeciency by Developer (PRs Merged / PR Iterations)
 
-```
+```sql
 SELECT contributor_parents.name as contributor_name,
     (COUNT(distinct pull_requests.id) * 1.0 / NULLIF(SUM(CASE WHEN pull_request_commits.is_pr_iteration THEN 1 ELSE 0 END), 0)) as efficiency_ratio,
     COUNT(distinct pull_requests.id) as prs_merged,
