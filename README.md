@@ -73,6 +73,7 @@ SELECT date_trunc('month', external_created_at) as MONTH, COUNT(*) FROM pull_req
 ```
 
 
+
 ### Merged Pull Requests Over Last 6 Months by week
 
 ```sql
@@ -119,6 +120,16 @@ SELECT date_trunc('month', external_created_at) as Month,
         COUNT(issues)
     FROM issues
     where external_created_at > date_trunc('month', current_date - interval '24' month)
+    GROUP BY Month
+```
+
+### Comments last 6 months
+
+```sql
+SELECT date_trunc('month', comments.external_created_at) as Month,
+        COUNT(*)
+    FROM comments
+    where comments.external_created_at > date_trunc('month', current_date - interval '12' month)
     GROUP BY Month
 ```
 
