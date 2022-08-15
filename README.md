@@ -226,7 +226,7 @@ SELECT  contributor_parents.name,
     ORDER BY clean_impact desc nulls last
 ```
 
-### Custom Stat Sheet
+### Custom Commits Stat Sheet
 
 ```sql
 SELECT contributor_parents.name as contributor_name,
