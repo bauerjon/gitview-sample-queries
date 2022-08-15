@@ -226,6 +226,24 @@ SELECT  contributor_parents.name,
     ORDER BY clean_impact desc nulls last
 ```
 
+### PR Effeciency by Developer (PRs Merged / PR Iterations)
+
+```
+SELECT contributor_parents.name as contributor_name,
+    (COUNT(distinct pull_requests.id) * 1.0 / NULLIF(SUM(CASE WHEN pull_request_commits.is_pr_iteration THEN 1 ELSE 0 END), 0)) as efficiency_ratio,
+    COUNT(distinct pull_requests.id) as prs_merged,
+    SUM(CASE WHEN pull_request_commits.is_pr_iteration THEN 1 ELSE 0 END) AS iterations
+    FROM pull_requests
+    LEFT OUTER JOIN pull_request_commits ON pull_request_commits.pull_request_id=pull_requests.id
+    INNER JOIN contributors ON pull_requests.contributor_id=contributors.id
+    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
+    where pull_requests.external_created_at > '2022-01-01'
+    AND pull_requests.external_merged_at IS NOT NULL
+    GROUP BY contributor_name
+    ORDER BY efficiency_ratio desc nulls last
+```
+
+
 ### Custom Commits Stat Sheet
 
 ```sql
