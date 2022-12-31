@@ -37,19 +37,6 @@ SELECT date_trunc('month', external_merged_at) as Month,
     GROUP BY Month, ContributorName, contributor_parents.id
 ```
 
-### Issues Created Last 6 Months By Contributor
-
-```sql
-SELECT date_trunc('month', external_merged_at) as Month,
-        contributor_parents.name as ContributorName,
-        COUNT(pull_requests)
-    FROM pull_requests
-    INNER JOIN contributors ON pull_requests.contributor_id=contributors.id
-    INNER JOIN contributor_parents ON contributor_parents.id=contributors.contributor_parent_id
-    where external_merged_at > date_trunc('month', current_date - interval '6' month)
-    GROUP BY Month, ContributorName, contributor_parents.id
-```
-
 ### Comments Added Last 6 Months By Contributor
 
 ```sql
