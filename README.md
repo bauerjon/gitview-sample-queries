@@ -246,7 +246,7 @@ SELECT contributor_parents.name as contributor_name,
 
 ```sql
 SELECT contributor_parents.name as contributor_name,
-    SUM(commits.impact) as impact,
+    ROUND(SUM(commits.impact)) as impact,
     SUM(commits.new_work) as new_work,
     SUM(commits.simple_work) as simple_work,
     SUM(commits.churn) as churn,
